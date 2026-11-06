@@ -130,13 +130,13 @@ In the mind map, solid connectors represent parent/subtask relationships. Dashed
 - Database schema changes use ordered migrations so future versions can add fields without discarding existing records.
 - Each device has its own local data store. Sync or shared storage is a future feature and must not be implied by installing on more than one device.
 
-## 9. Proposed technology
+## 9. Current technology
 
-- **Tauri 2:** desktop application shell for Windows and macOS.
+- **Electron:** desktop application shell, run from source without creating an installer.
 - **React + TypeScript:** shared interface and product UI.
-- **Rust:** timer state transitions and local data operations.
-- **SQLite:** on-device relational storage.
-- **React Flow (`@xyflow/react`):** interactive task mind map and dependency edges.
+- **Electron preload + IPC:** narrow bridge for operating system information.
+- **Browser local storage:** current on-device persistence; SQLite remains a possible future storage migration.
+- **Custom React mind map:** interactive task hierarchy, notes, and dependency edges.
 
 Keep timer rules, storage access, reporting calculations, and UI components behind clear module boundaries. This allows later additions such as an iPhone client, exports, or device sync without requiring those features in the first release.
 
