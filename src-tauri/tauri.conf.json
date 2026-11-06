@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Tempo",
+  "version": "0.1.0",
+  "identifier": "com.tempo.timetracker",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{ "title": "Tempo · Time Tracker", "width": 1280, "height": 820, "minWidth": 960, "minHeight": 640, "center": true }],
+    "security": { "csp": null }
+  },
+  "bundle": { "active": true, "targets": "all", "category": "Productivity", "shortDescription": "Local-first time tracking" }
+}

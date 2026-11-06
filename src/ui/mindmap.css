@@ -1,0 +1,25 @@
+.content:has(.mindmap-page){max-width:none;height:calc(100vh - 58px);padding-bottom:20px;display:flex;flex-direction:column}
+.mindmap-page{display:flex;flex-direction:column;flex:1;min-height:0}
+.mindmap-page>.page-heading{margin-bottom:18px;flex:none}
+.mindmap-workspace{display:grid;grid-template-columns:260px minmax(0,1fr);gap:13px;flex:1;min-height:0}
+.mindmap-sidebar{background:#fff;border:1px solid #e6eae4;border-radius:8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.mindmap-sidebar-head{height:42px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #edf0eb;color:#858d84;font-size:9px;letter-spacing:.8px}
+.mindmap-sidebar-head span{background:#f0f3ef;border-radius:9px;padding:3px 7px;color:#727b71;font-size:9px;letter-spacing:0}
+.mindmap-task-tree{overflow:auto;padding:8px 7px 14px}
+.mindtree-row{height:34px;display:flex;align-items:center;gap:5px;border-radius:5px;padding-right:5px}
+.mindtree-row:hover{background:#f8f9f7}.mindtree-row.active{background:#edf4ed}
+.mindtree-expand,.mindtree-add{width:20px;height:22px;flex:none;display:grid;place-items:center;border:0;background:transparent;color:#969e95;padding:0}
+.mindtree-select{height:30px;flex:1;min-width:0;display:flex;align-items:center;gap:7px;border:0;background:transparent;padding:0 2px;text-align:left;color:#525950;font-size:10px}
+.mindtree-select>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mindtree-add{opacity:0}.mindtree-row:hover .mindtree-add{opacity:1}
+.category-icon{height:19px;width:19px;border-radius:5px;display:grid;place-items:center;flex:none;background:#edf1ee;color:#738078}.category-icon>span{width:6px;height:6px;background:currentColor;border-radius:50%}
+.category-work{background:#eaf3eb;color:#54815a}.category-personal{background:#f1edfa;color:#7968a5}.category-admin{background:#edf1f8;color:#637da0}.category-learning{background:#fff3e4;color:#b27d37}.category-health{background:#fbecee;color:#b56571}
+.tree-empty{padding:23px 12px;color:#929a91;font-size:10px;text-align:center}.tree-empty button{margin:12px auto 0;border:1px solid #e5e9e3;background:#fff;border-radius:5px;padding:6px 8px;display:flex;gap:5px;align-items:center;color:#5c775f;font-size:9px}
+.mindmap-workspace>.map-canvas{min-height:0;height:auto;flex:1}
+.map-parent-trail{position:absolute;top:17px;left:18px;display:flex;align-items:center;gap:6px;z-index:2;color:#a0a69f;font-size:9px}.map-parent-trail button{border:0;background:transparent;color:#6c796b;font-size:9px;padding:3px}.map-parent-trail button:hover{color:#42714a;text-decoration:underline}.map-parent-trail span{color:#535b52;font-weight:600}
+.map-add-root-child{position:absolute;left:18px;bottom:17px;height:29px;border:1px solid #e1e7df;border-radius:5px;background:#fff;color:#5e7961;display:flex;align-items:center;gap:5px;padding:0 9px;font-size:9px}.map-add-root-child:hover{background:#f2f7f2}
+.dependency-editor{border:1px solid #ecefea;border-radius:7px;padding:13px;margin-top:20px}.dependency-head{display:flex;align-items:start;justify-content:space-between;margin-bottom:9px}.dependency-head h3{margin:0 0 4px}.dependency-head small,.dependency-hint{font-size:9px;color:#979e96}.dependency-head>span{font-size:9px;color:#768174;background:#f0f3ef;border-radius:8px;padding:3px 6px}
+.dependency-chip{display:flex;align-items:center;gap:7px;padding:7px 0;border-top:1px solid #f0f1ee;font-size:9px;color:#5f665e}.dependency-chip>span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.dependency-chip small{font-size:8px;color:#999f98}.dependency-chip button{border:0;background:transparent;color:#a1a79f;padding:2px}.dependency-chip .category-icon{height:16px;width:16px}
+.dependency-editor select,.modal select{height:33px;width:100%;border:1px solid #e3e7e1;border-radius:5px;background:#fff;padding:0 8px;color:#60675f;font-size:10px;margin-top:7px}.dependency-hint{display:block;margin-top:6px}
+.task-row .category-icon{width:18px;height:18px}.task-row .category-icon>span{width:6px;height:6px}.task-row .play-task:disabled{opacity:.34;cursor:not-allowed}
+.modal label{display:block;margin:12px 0}.modal input,.modal label select{display:block;width:100%;height:37px;border:1px solid #e0e5de;border-radius:5px;padding:0 10px;margin-top:7px;outline-color:#8cac8f;font-size:11px;background:#fff;color:#525950}
+.map-toolbar{z-index:2}.mindmap-children{max-height:calc(100vh - 210px)}
