@@ -59,3 +59,16 @@
 .theme-dark .mark-complete-button:hover,.theme-dark .filter-toggle:hover,.theme-dark .outline-button:hover{background:#343543!important}
 .theme-dark .today-event-card,.theme-dark .calendar-event-card{color:#e5e5ef}
 .theme-dark .stat-icon.green{color:#c7b8f5!important;background:#332d43!important}
+
+/* Keep task actions visible and details reachable on short displays. */
+.detail-drawer{overflow-y:auto}
+.task-title-row{display:flex;align-items:center;gap:8px;margin:9px 0 5px;min-width:0}
+.task-title-row h2{min-width:0;overflow-wrap:anywhere;margin:0;flex:1}
+.task-rename-trigger{flex:none}
+.task-rename-form{display:flex;align-items:center;gap:6px;width:100%;min-width:0}
+.task-rename-form input{height:34px;min-width:0;flex:1;border:1px solid #e0e5de;border-radius:5px;padding:0 8px;font-size:12px}
+.task-rename-form .outline-button{height:32px;padding:0 8px}
+.task-drawer-actions{display:flex;gap:8px;margin:15px 0 19px}
+.task-drawer-actions>*{flex:1;justify-content:center;margin:0;min-width:0}
+.task-delete-action{width:auto}
+.theme-dark .task-rename-form input{background:#292a36;border-color:#424354;color:#e1e1ec}
