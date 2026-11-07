@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu, Tray, nativeImage, screen } = require('electron');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -9,8 +9,14 @@ const DATA_DIR = path.join(PROJECT_DIR, '.tempo-data');
 const DATABASE_FILE = path.join(DATA_DIR, 'tempo.sqlite');
 const LEGACY_ELECTRON_PROFILE = path.join(app.getPath('appData'), 'time-tracker');
 const isDev = process.argv.includes('--dev');
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
 let databasePromise;
 let legacyProfilePendingCleanup;
+let mainWindow;
+let tray;
+let trayTaskItem;
+let traySessionItem;
+let quitInProgress = false;
 
 // Keep both Tempo's database and Chromium's profile/cache inside the project.
 app.setName('Tempo');
@@ -34,6 +40,7 @@ app.setPath('crashDumps', path.join(DATA_DIR, 'crash-dumps'));
 function createWindow() {
   const window = new BrowserWindow({
     title: 'Tempo · Time Tracker',
+    icon: path.join(__dirname, 'app-icon.png'),
     width: 1280,
     height: 820,
     minWidth: 960,
@@ -47,12 +54,97 @@ function createWindow() {
     },
   });
 
+  mainWindow = window;
   window.once('ready-to-show', () => window.show());
+  window.on('minimize', event => { event.preventDefault(); window.hide(); });
+  window.on('closed', () => { if (mainWindow === window) mainWindow = null; });
+  const resizeForDisplay = () => {
+    if (window.isDestroyed()) return;
+    const display = screen.getDisplayMatching(window.getBounds());
+    const scale = Math.min(display.workAreaSize.width / 1280, display.workAreaSize.height / 820);
+    const factor = Math.max(0.95, Math.min(1.3, scale * 1.18));
+    window.setMinimumSize(Math.max(960, Math.ceil(900 * factor)), 640);
+    window.webContents.setZoomFactor(factor);
+  };
+  window.once('did-finish-load', resizeForDisplay);
+  window.on('move', resizeForDisplay);
   if (isDev) {
     window.loadURL('http://127.0.0.1:1420');
     window.webContents.openDevTools({ mode: 'detach' });
   } else {
     window.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
+  }
+}
+
+
+function showMainWindow() {
+  if (!mainWindow || mainWindow.isDestroyed()) { createWindow(); return; }
+  if (mainWindow.isMinimized()) mainWindow.restore();
+  mainWindow.show();
+  mainWindow.focus();
+}
+
+if (hasSingleInstanceLock) {
+  app.on('second-instance', showMainWindow);
+}
+
+async function stopRunningTimers() {
+  const db = await getDatabase();
+  const stamp = Date.now();
+  db.run('UPDATE sessions SET end = ? WHERE end IS NULL', [stamp]);
+  db.run('UPDATE task_entries SET end = ? WHERE end IS NULL', [stamp]);
+  db.run('UPDATE app_state SET active_task_id = NULL, resume_task_id = NULL WHERE id = 1');
+  persistDatabase(db);
+}
+
+app.on('before-quit', event => {
+  if (!hasSingleInstanceLock || quitInProgress) return;
+  event.preventDefault();
+  quitInProgress = true;
+  stopRunningTimers()
+    .catch(error => console.error('Could not stop active timers before quitting', error))
+    .finally(() => app.quit());
+});
+
+function createTray() {
+  const icon = nativeImage.createFromPath(path.join(__dirname, 'tray.png'));
+  tray = new Tray(icon.resize({ width: 20, height: 20 }));
+  tray.setToolTip('Tempo · Time Tracker');
+  const menu = Menu.buildFromTemplate([
+    { label: 'Current task: None', enabled: false },
+    { label: 'Work session: Not running', enabled: false },
+    { type: 'separator' },
+    { label: 'Show Tempo', click: showMainWindow },
+    { type: 'separator' },
+    { label: 'Quit Tempo', role: 'quit' },
+  ]);
+  trayTaskItem = menu.items[0];
+  traySessionItem = menu.items[1];
+  tray.setContextMenu(menu);
+  tray.on('click', showMainWindow);
+  tray.on('double-click', showMainWindow);
+  refreshTrayStatus();
+}
+
+function formatTrayDuration(ms) {
+  const centiseconds = Math.floor(Math.max(0, ms) / 10);
+  const seconds = Math.floor(centiseconds / 100);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}.${String(centiseconds % 100).padStart(2, '0')}`;
+}
+
+async function refreshTrayStatus() {
+  if (!trayTaskItem || !traySessionItem) return;
+  try {
+    const store = loadStoreFromDatabase(await getDatabase());
+    const task = store?.tasks.find(item => item.id === store.activeTaskId && !item.done);
+    const session = store?.sessions.find(item => !item.end);
+    const name = task?.name ?? 'None';
+    trayTaskItem.label = `Current task: ${name.length > 48 ? `${name.slice(0, 45)}…` : name}`;
+    traySessionItem.label = `Work session: ${session ? formatTrayDuration(Date.now() - session.start) : 'Not running'}`;
+  } catch (error) {
+    console.error('Could not refresh tray status', error);
   }
 }
 
@@ -216,6 +308,7 @@ ipcMain.handle('tempo:open-data-directory', async () => {
 ipcMain.handle('tempo:load-store', async () => loadStoreFromDatabase(await getDatabase()));
 ipcMain.handle('tempo:save-store', async (_event, store) => {
   saveStoreToDatabase(await getDatabase(), store);
+  refreshTrayStatus();
   if (legacyProfilePendingCleanup) {
     try { fs.rmSync(legacyProfilePendingCleanup, { recursive: true, force: true }); legacyProfilePendingCleanup = undefined; }
     catch (error) { console.error('Tempo data was migrated, but the old Electron profile could not be removed', error); }
@@ -235,12 +328,14 @@ ipcMain.handle('tempo:clear-store', async () => {
 });
 
 app.whenReady().then(() => {
+  if (!hasSingleInstanceLock) return;
+  if (process.platform === 'darwin') app.dock.setIcon(path.join(__dirname, 'app-icon.png'));
+  createTray();
+  setInterval(refreshTrayStatus, 1000);
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
+app.on('window-all-closed', () => { /* Keep Tempo alive so the tray can reopen it. */ });
