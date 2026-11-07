@@ -13,7 +13,7 @@ A local-first time tracker for recording daily work sessions and time spent on t
 
 ## Technology
 
-- Electron provides the desktop window and operating system bridge.
+- Electron provides the desktop window, system tray, and operating system bridge. Minimize Tempo to keep it running in the tray.
 - React and TypeScript power the user interface.
 - Contributors run the desktop app from source; installer packaging is not part of the current workflow.
 - Tasks, sessions, settings, calendar events, and mind map notes are stored in `.tempo-data/tempo.sqlite` beside the project. The Electron profile, cache, and SQLite file are all kept under `.tempo-data/`; cloud sync is not wired up.
@@ -32,4 +32,4 @@ The project uses Electron for its desktop shell. Contributors need Git and Node.
 
 ## Implementation status
 
-The app includes work sessions and task timers, nested projects/tasks, a draggable mind map with notes and dependencies, configurable categories, local calendar events and reminders, reports, light/dark themes, and text-size settings. Desktop profile names come from the operating system account. Data remains local to the project directory and is not synced.
+The app includes work sessions and task timers, nested projects/tasks with cascade deletion, a draggable mind map with notes and dependencies, configurable categories, local calendar events and reminders, reports, light/dark themes, and text-size settings. Desktop profile names come from the operating system account. Data remains local to the project directory and is not synced.

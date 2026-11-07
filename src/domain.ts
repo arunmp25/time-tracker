@@ -39,7 +39,7 @@ export const activeSession = (s: Store) => s.sessions.find(x => !x.end);
 export function elapsed(items: { start: number; end?: number }[], now = Date.now()) { return items.reduce((n, x) => n + Math.max(0, (x.end ?? now) - x.start), 0); }
 export const totalTaskMs = (t: Task, s: Store, now = Date.now()): number => elapsed(t.entries, now) + s.tasks.filter(x => x.parentId === t.id).reduce((n, x) => n + totalTaskMs(x, s, now), 0);
 export function fmt(ms: number) { const sec = Math.floor(ms / 1000), h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
-export function fmtTimer(ms: number) { return `${fmt(ms)}.${String(Math.floor(Math.max(0,ms)%1000)).padStart(3,'0')}`; }
+export function fmtTimer(ms: number) { return `${fmt(ms)}.${String(Math.floor(Math.max(0,ms)%1000/10)).padStart(2,'0')}`; }
 export const uid = () => crypto.randomUUID();
 export function localDay(ts: number) { const d = new Date(ts); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 export function durationOnDay(start:number,end:number,day:string) { const [y,m,d]=day.split('-').map(Number);const from=new Date(y,m-1,d).getTime();const to=new Date(y,m-1,d+1).getTime();return Math.max(0,Math.min(end,to)-Math.max(start,from)); }

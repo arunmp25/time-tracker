@@ -17,7 +17,7 @@ npm ci --cache .npm-cache
 npm run desktop:run
 ```
 
-`desktop:run` builds the React interface and opens the built app in Electron. To work with the Vite live-reload server instead, run:
+`desktop:run` builds the React interface and opens the built app in Electron. Minimize the window to keep Tempo running in the system tray; use the tray icon to reopen or quit it. Delete a task or project from its details drawer; deleting a project also removes its subtasks and time entries. To work with the Vite live-reload server instead, run:
 
 ```sh
 npm run desktop:dev
