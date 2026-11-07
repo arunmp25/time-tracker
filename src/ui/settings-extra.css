@@ -72,3 +72,17 @@
 .task-drawer-actions>*{flex:1;justify-content:center;margin:0;min-width:0}
 .task-delete-action{width:auto}
 .theme-dark .task-rename-form input{background:#292a36;border-color:#424354;color:#e1e1ec}
+
+/* Collapsible app navigation. */
+.sidebar{transition:width .18s ease,padding .18s ease}
+.sidebar-toggle,.mindtree-pane-toggle{width:28px;height:28px;display:grid;place-items:center;flex:none;border:0;border-radius:5px;background:transparent;color:#838b83;padding:0}
+.sidebar-toggle:hover,.mindtree-pane-toggle:hover{background:#f1f3f0;color:#565d55}
+.sidebar-collapsed{width:72px;padding-left:10px;padding-right:10px}
+.sidebar-collapsed .brand{justify-content:space-between;gap:0;padding:0}
+.sidebar-collapsed .brand>span,.sidebar-collapsed .workspace,.sidebar-collapsed .nav-item>span,.sidebar-collapsed .profile>div:not(.avatar){display:none}
+.sidebar-collapsed nav .nav-item,.sidebar-collapsed .sidebar-bottom>.nav-item{justify-content:center;padding:0}
+.sidebar-collapsed .sidebar-bottom .profile{justify-content:center;padding:12px 0 0}
+.sidebar-collapsed .sidebar-toggle{width:24px;height:24px;background:#fff;box-shadow:0 1px 4px #20282020}
+.theme-dark .sidebar-toggle,.theme-dark .mindtree-pane-toggle{color:#bbb9cb}
+.theme-dark .sidebar-toggle:hover,.theme-dark .mindtree-pane-toggle:hover{background:#343543;color:#e5e5ef}
+.theme-dark .sidebar-collapsed .sidebar-toggle{background:#292a36;box-shadow:0 1px 4px #0005}
