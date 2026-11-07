@@ -9,22 +9,32 @@ export type Store = { sessions: Session[]; tasks: Task[]; mindmapNotes: MindmapN
 const KEY = 'tempo-local-v1';
 export const defaultSettings: AppSettings = { theme:'light', fontSize:'medium', weekStart:'Monday', categories:[{name:'Work',color:'#4f9d69'},{name:'Personal',color:'#886bd1'},{name:'Admin',color:'#5182c4'},{name:'Learning',color:'#d89237'},{name:'Health',color:'#df6f7b'}] };
 export const emptyStore: Store = { sessions: [], tasks: [], mindmapNotes: [], calendarEvents: [], settings: defaultSettings };
+export function normalizeStore(saved: Partial<Store>): Store {
+  const tasks = saved.tasks ?? [];
+  const existingNotes = saved.mindmapNotes ?? [];
+  const migratedNotes = tasks.flatMap(task => {
+    if (!task.notes?.trim()) return [];
+    let root = task; while (root.parentId) { const parent = tasks.find(t => t.id === root.parentId); if (!parent) break; root = parent; }
+    return [{ id: uid(), rootTaskId: root.id, text: task.notes, color: task.notesColor ?? 'yellow', x: 700, y: 80 + existingNotes.length * 170 }];
+  });
+  const cleanedTasks = tasks.map(({ notes: _notes, notesColor: _notesColor, ...task }) => task);
+  return {
+    ...emptyStore,
+    ...saved,
+    calendarEvents: saved.calendarEvents ?? [],
+    settings: { ...defaultSettings, ...saved.settings, categories: saved.settings?.categories ?? defaultSettings.categories },
+    tasks: cleanedTasks,
+    mindmapNotes: [...existingNotes, ...migratedNotes],
+  };
+}
 export function loadStore(): Store {
   try {
-    const raw = localStorage.getItem(KEY); if (!raw) return emptyStore;
-    const saved = JSON.parse(raw) as Partial<Store>; const tasks = saved.tasks ?? [];
-    const existingNotes = saved.mindmapNotes ?? [];
-    const migratedNotes = tasks.flatMap(task => {
-      if (!task.notes?.trim()) return [];
-      let root = task; while (root.parentId) { const parent = tasks.find(t => t.id === root.parentId); if (!parent) break; root = parent; }
-      return [{ id: uid(), rootTaskId: root.id, text: task.notes, color: task.notesColor ?? 'yellow', x: 700, y: 80 + existingNotes.length * 170 }];
-    });
-    const cleanedTasks = tasks.map(({ notes: _notes, notesColor: _notesColor, ...task }) => task);
-    return { ...emptyStore, ...saved, calendarEvents:saved.calendarEvents??[], settings:{...defaultSettings,...saved.settings,categories:saved.settings?.categories??defaultSettings.categories}, tasks: cleanedTasks, mindmapNotes: [...existingNotes, ...migratedNotes] };
-  }
-  catch { return emptyStore; }
+    const raw = localStorage.getItem(KEY);
+    return raw ? normalizeStore(JSON.parse(raw) as Partial<Store>) : emptyStore;
+  } catch { return emptyStore; }
 }
 export function saveStore(s: Store) { localStorage.setItem(KEY, JSON.stringify(s)); }
+export function clearLegacyStore() { localStorage.removeItem(KEY); }
 export const activeSession = (s: Store) => s.sessions.find(x => !x.end);
 export function elapsed(items: { start: number; end?: number }[], now = Date.now()) { return items.reduce((n, x) => n + Math.max(0, (x.end ?? now) - x.start), 0); }
 export const totalTaskMs = (t: Task, s: Store, now = Date.now()): number => elapsed(t.entries, now) + s.tasks.filter(x => x.parentId === t.id).reduce((n, x) => n + totalTaskMs(x, s, now), 0);

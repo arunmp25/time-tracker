@@ -13,16 +13,18 @@
     "desktop:run": "npm run build && electron ."
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "typescript": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "lucide-react": "^0.468.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/sql.js": "^1.4.11",
+    "@vitejs/plugin-react": "latest",
     "concurrently": "latest",
     "electron": "latest",
+    "lucide-react": "^0.468.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "sql.js": "^1.15.2",
+    "typescript": "latest",
+    "vite": "latest",
     "wait-on": "latest"
   },
   "main": "electron/main.cjs"

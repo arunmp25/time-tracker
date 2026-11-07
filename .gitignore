@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.tempo-data/
+.npm-cache/
 src-tauri/target/
 
 .DS_Store

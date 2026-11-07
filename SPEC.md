@@ -135,7 +135,7 @@ In the mind map, solid connectors represent parent/subtask relationships. Dashed
 - **Electron:** desktop application shell, run from source without creating an installer.
 - **React + TypeScript:** shared interface and product UI.
 - **Electron preload + IPC:** narrow bridge for operating system information.
-- **Browser local storage:** current on-device persistence; SQLite remains a possible future storage migration.
+- **SQLite (`sql.js` WebAssembly):** relational on-device persistence written to `.tempo-data/tempo.sqlite` in the project directory.
 - **Custom React mind map:** interactive task hierarchy, notes, and dependency edges.
 
 Keep timer rules, storage access, reporting calculations, and UI components behind clear module boundaries. This allows later additions such as an iPhone client, exports, or device sync without requiring those features in the first release.
