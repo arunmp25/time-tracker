@@ -1,7 +1,8 @@
-const { app, BrowserWindow, ipcMain, shell, Menu, Tray, nativeImage, screen } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu, Tray, Notification, nativeImage, screen } = require('electron');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { execFile } = require('node:child_process');
 const initSqlJs = require('sql.js');
 
 const PROJECT_DIR = path.resolve(__dirname, '..');
@@ -17,6 +18,8 @@ let tray;
 let trayTaskItem;
 let traySessionItem;
 let quitInProgress = false;
+let notifiedBreakSessionId;
+const BREAK_REMINDER_AFTER_MS = 60 * 1000; // Temporary one-minute threshold for notification testing.
 
 // Keep both Tempo's database and Chromium's profile/cache inside the project.
 app.setName('Tempo');
@@ -134,6 +137,28 @@ function formatTrayDuration(ms) {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}.${String(centiseconds % 100).padStart(2, '0')}`;
 }
 
+function showBreakReminder() {
+  const thresholdLabel = BREAK_REMINDER_AFTER_MS < 60 * 60 * 1000 ? 'one minute' : 'one hour';
+  const body = `Your work session has passed ${thresholdLabel}. Take a short break when you can.`;
+  if (process.platform === 'darwin') {
+    execFile('/usr/bin/osascript', ['-e', `display notification "${body}" with title "Tempo" sound name "Glass"`], error => {
+      if (error) console.error('Could not show the macOS break reminder', error);
+    });
+    return;
+  }
+  if (!Notification.isSupported()) {
+    console.error('System notifications are not supported on this computer');
+    return;
+  }
+  const notification = new Notification({
+    title: 'Time for a break',
+    body,
+    icon: path.join(__dirname, 'app-icon.png'),
+  });
+  notification.on('failed', (_event, error) => console.error('Could not show the break reminder', error));
+  notification.show();
+}
+
 async function refreshTrayStatus() {
   if (!trayTaskItem || !traySessionItem) return;
   try {
@@ -143,6 +168,11 @@ async function refreshTrayStatus() {
     const name = task?.name ?? 'None';
     trayTaskItem.label = `Current task: ${name.length > 48 ? `${name.slice(0, 45)}…` : name}`;
     traySessionItem.label = `Work session: ${session ? formatTrayDuration(Date.now() - session.start) : 'Not running'}`;
+    if (!session) notifiedBreakSessionId = undefined;
+    else if (session.id !== notifiedBreakSessionId && Date.now() - session.start >= BREAK_REMINDER_AFTER_MS) {
+      notifiedBreakSessionId = session.id;
+      showBreakReminder();
+    }
   } catch (error) {
     console.error('Could not refresh tray status', error);
   }
