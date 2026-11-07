@@ -29,7 +29,7 @@ export default function App() {
     else saveStore(store);
   },[store,storageMode]);
   useEffect(() => { window.tempo?.getSystemUsername().then(setUserName).catch(()=>setUserName('Local user')); }, []);
-  const session = activeSession(store); const todayKey=localDay(now); const todaySessions = store.sessions.filter(x => durationOnDay(x.start,x.end??now,todayKey)>0); const todayMs = todaySessions.reduce((sum,x)=>sum+durationOnDay(x.start,x.end??now,todayKey),0);
+  const session = activeSession(store); const todayKey=localDay(now); const todaySessions = store.sessions.filter(x => durationOnDay(x.start,x.end??now,todayKey)>0).sort((a,b)=>b.start-a.start); const todayMs = todaySessions.reduce((sum,x)=>sum+durationOnDay(x.start,x.end??now,todayKey),0);
   const todayEntries=store.tasks.flatMap(task=>task.entries.map(entry=>({task,entry,duration:durationOnDay(entry.start,entry.end??now,todayKey)}))).filter(x=>x.duration>0);
   const todayTaskGroups=store.tasks.map(task=>({task,entries:todayEntries.filter(x=>x.task.id===task.id)})).filter(x=>x.entries.length>0);
   const todayEvents=store.calendarEvents.filter(event=>event.date===todayKey);
