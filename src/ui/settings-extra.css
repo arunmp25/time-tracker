@@ -86,3 +86,48 @@
 .theme-dark .sidebar-toggle,.theme-dark .mindtree-pane-toggle{color:#bbb9cb}
 .theme-dark .sidebar-toggle:hover,.theme-dark .mindtree-pane-toggle:hover{background:#343543;color:#e5e5ef}
 .theme-dark .sidebar-collapsed .sidebar-toggle{background:#292a36;box-shadow:0 1px 4px #0005}
+
+.project-color-field{display:flex!important;align-items:center;gap:10px;color:#61685f;font-size:10px;font-weight:600}
+.project-color-field input[type=color]{width:42px!important;height:32px!important;margin:0!important;padding:2px!important;border:1px solid #dfe5de!important;border-radius:5px;background:#fff;cursor:pointer}
+.theme-dark .project-color-field{color:#d0d0dd}
+.theme-dark .project-color-field input[type=color]{background:#292a36;border-color:#424354!important}
+
+/* Classic warm desktop palette inspired by older beige Windows interfaces. */
+.shell.theme-classic{background:#e8ddcd!important;color:#45372b;color-scheme:light}
+.theme-classic .sidebar,.theme-classic .topbar,.theme-classic .timer-card,.theme-classic .focus-card,.theme-classic .tasks-panel,.theme-classic .report-panel,.theme-classic .calendar-card,.theme-classic .day-detail,.theme-classic .settings-card,.theme-classic .completed-tasks-panel,.theme-classic .task-detail-panel,.theme-classic .day-report-grid .report-panel{background:#f7f0e4!important;border-color:#d0c0a8!important;color:#45372b}
+.theme-classic .content{background:#e8ddcd!important}
+.theme-classic .sidebar{border-right-color:#d0c0a8!important}
+.theme-classic .topbar{border-bottom-color:#d0c0a8!important}
+.theme-classic h1,.theme-classic h2,.theme-classic h3,.theme-classic .task-name b,.theme-classic .focus-name b,.theme-classic .completed-task-name,.theme-classic .settings-row>div:first-child b,.theme-classic .category-setting-row>b,.theme-classic .breadcrumbs b,.theme-classic .profile b{color:#45372b!important}
+.theme-classic .muted,.theme-classic p,.theme-classic small,.theme-classic .settings-section-title p,.theme-classic .settings-row>div:first-child small,.theme-classic .task-name small,.theme-classic .focus-name small,.theme-classic .stat-row small,.theme-classic .stat-meta{color:#86735e}
+.theme-classic .nav-item{color:#76634f}
+.theme-classic .nav-item:hover,.theme-classic .nav-item.selected{background:#eadbc5!important;color:#754b26!important}
+.theme-classic .brand-icon{background:#ead8bd!important;color:#8a572b!important}
+.theme-classic .primary-button{background:#8c5a2d!important;color:#fff!important}
+.theme-classic .primary-button:hover{background:#754720!important}
+.theme-classic .quiet-button,.theme-classic .search,.theme-classic .outline-button,.theme-classic .report-date-control,.theme-classic .segmented-setting,.theme-classic .settings-row select,.theme-classic .category-setting-row select,.theme-classic .add-category-form input,.theme-classic .add-category-form select,.theme-classic input,.theme-classic textarea,.theme-classic select{background:#fbf6ed!important;border-color:#cdbb9f!important;color:#493a2c!important}
+.theme-classic .timer-main,.theme-classic .stat-row,.theme-classic .task-row,.theme-classic .today-session,.theme-classic .today-task-group,.theme-classic .report-session,.theme-classic .report-task-detail,.theme-classic .settings-row,.theme-classic .category-setting-row,.theme-classic .completed-tasks-panel td,.theme-classic .data-location-row,.theme-classic .delete-data-row{border-color:#d8c9b3!important}
+.theme-classic .clock-display,.theme-classic .timer-caption,.theme-classic .timer-status,.theme-classic .timer-note,.theme-classic .timer-aside,.theme-classic .day-total b,.theme-classic .report-total b{color:#493a2c}
+.theme-classic .stat-icon.purple,.theme-classic .stat-icon.green,.theme-classic .note-icon,.theme-classic .empty-icon{background:#eee0cb!important;color:#8b5a30!important}
+.theme-classic .status-dot.live,.theme-classic .pulse{background:#a46c35;box-shadow:0 0 0 3px #f0e2ce}
+.theme-classic .map-canvas{background-color:#f4ecdf!important;background-image:radial-gradient(#d8c9b4 .8px,transparent .8px)!important;border-color:#d0c0a8!important}
+.theme-classic .interactive-node,.theme-classic .mindmap-sidebar,.theme-classic .mindmap-node,.theme-classic .map-root,.theme-classic .map-add-root-child,.theme-classic .filter-menu,.theme-classic .filter-popover,.theme-classic .search-results{background:#fbf6ed!important;border-color:#d0c0a8!important;color:#493a2c!important}
+.theme-classic .mindmap-copy b,.theme-classic .mindtree-select,.theme-classic .mindtree-select>span:last-child{color:#493a2c!important}
+.theme-classic .mindmap-copy small,.theme-classic .mindtree-sidebar-head,.theme-classic .interactive-node-actions{color:#86735e!important}
+.theme-classic .mindtree-row.active,.theme-classic .mindtree-row:hover,.theme-classic .calendar-grid .day-cell:hover{background:#eadbc5!important}
+.theme-classic .completed-panel-head,.theme-classic .completed-tasks-panel th{background:#efe4d3!important;border-color:#d0c0a8!important;color:#76634f}
+.theme-classic .calendar-grid .day-cell{color:#594632}
+.theme-classic .calendar-grid .selected-day{background:#e7d4b9!important}
+.theme-classic .today-events{background:linear-gradient(110deg,#f8edd9,#f3e8d7 55%,#eee5d9)!important;border-color:#ddc9aa!important}
+.theme-classic .today-event-card,.theme-classic .calendar-event-card{background:#fbf6ed!important;color:#493a2c}
+.theme-classic .drawer-backdrop,.theme-classic .modal-backdrop{background:#3a2e2266}
+.theme-classic .detail-drawer,.theme-classic .modal{background:#f7f0e4!important;color:#493a2c}
+.theme-classic .modal h2,.theme-classic .detail-drawer h2,.theme-classic .detail-drawer h3{color:#45372b!important}
+.theme-classic .segmented-setting button.selected{background:#eadbc5!important;color:#754b26!important}
+.theme-classic .filter-toggle.active,.theme-classic .task-check.checked{background:#8c5a2d!important;border-color:#8c5a2d!important;color:white!important}
+.theme-classic .task-rename-form input,.theme-classic .project-color-field input[type=color]{background:#fbf6ed!important;border-color:#cdbb9f!important}
+.theme-classic .node-resize-handle{background:linear-gradient(135deg,transparent 48%,#a98c6b 49%,#a98c6b 56%,transparent 57%)}
+.theme-dark .task-page-tabs{border-color:#3e414f}.theme-dark .task-page-tabs button{color:#a7a9b8}.theme-dark .task-page-tabs button.active{color:#ebeaf3;border-bottom-color:#9c8ddd}.theme-dark .task-list-panel{background:#242532;border-color:#3e414f}.theme-dark .task-list-toolbar,.theme-dark .task-list-pagination{border-color:#3e414f}.theme-dark .task-list-toolbar h2{color:#e8e7f0}.theme-dark .task-list-toolbar p,.theme-dark .task-list-pagination{color:#a7a9b8}.theme-dark .task-planning-fields select,.theme-dark .task-planning-fields input{background:#292a36;color:#e1e1ec;border-color:#424354}.theme-dark .task-priority,.theme-dark .task-importance{filter:brightness(.78)}
+.theme-classic .task-page-tabs{border-color:#d0c0a8}.theme-classic .task-page-tabs button{color:#86735e}.theme-classic .task-page-tabs button.active{color:#45372b;border-bottom-color:#8c5a2d}.theme-classic .task-list-panel{background:#fbf6ed;border-color:#d0c0a8}.theme-classic .task-list-toolbar,.theme-classic .task-list-pagination{border-color:#d0c0a8}.theme-classic .task-list-toolbar h2{color:#45372b}.theme-classic .task-list-toolbar p,.theme-classic .task-list-pagination{color:#86735e}.theme-classic .task-planning-fields select,.theme-classic .task-planning-fields input{background:#fbf6ed;color:#45372b;border-color:#cdbb9f}
+.theme-dark .task-list-panel th{background:#292a36;color:#b9bac8}.theme-dark .task-list-panel td{border-color:#3a3b4a;color:#c4c4d2}.theme-dark .task-list-panel .completed-task-name{color:#e1e1ec}
+.theme-classic .task-list-panel th{background:#efe4d3;color:#76634f}.theme-classic .task-list-panel td{border-color:#d0c0a8;color:#76634f}.theme-classic .task-list-panel .completed-task-name{color:#45372b}

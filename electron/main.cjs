@@ -187,7 +187,7 @@ async function getDatabase() {
         : new SQL.Database();
       db.exec(`
         PRAGMA foreign_keys = ON;
-        PRAGMA user_version = 1;
+        PRAGMA user_version = 3;
         CREATE TABLE IF NOT EXISTS app_state (
           id INTEGER PRIMARY KEY CHECK (id = 1),
           settings_json TEXT NOT NULL,
@@ -208,7 +208,14 @@ async function getDatabase() {
           category TEXT,
           category_color TEXT,
           dependencies_json TEXT NOT NULL,
-          done INTEGER NOT NULL
+          done INTEGER NOT NULL,
+          project_color TEXT,
+          map_width REAL,
+          map_height REAL,
+          priority TEXT,
+          importance TEXT,
+          planned_date TEXT,
+          created_at INTEGER
         );
         CREATE TABLE IF NOT EXISTS task_entries (
           id TEXT PRIMARY KEY,
@@ -224,7 +231,9 @@ async function getDatabase() {
           text TEXT NOT NULL,
           color TEXT NOT NULL,
           x REAL NOT NULL,
-          y REAL NOT NULL
+          y REAL NOT NULL,
+          width REAL,
+          height REAL
         );
         CREATE TABLE IF NOT EXISTS calendar_events (
           id TEXT PRIMARY KEY,
@@ -236,6 +245,17 @@ async function getDatabase() {
           reminder INTEGER NOT NULL DEFAULT 0
         );
       `);
+      const taskColumns = new Set((db.exec('PRAGMA table_info(tasks)')[0]?.values ?? []).map(column => column[1]));
+      if (!taskColumns.has('project_color')) db.run('ALTER TABLE tasks ADD COLUMN project_color TEXT');
+      if (!taskColumns.has('map_width')) db.run('ALTER TABLE tasks ADD COLUMN map_width REAL');
+      if (!taskColumns.has('map_height')) db.run('ALTER TABLE tasks ADD COLUMN map_height REAL');
+      if (!taskColumns.has('priority')) db.run('ALTER TABLE tasks ADD COLUMN priority TEXT');
+      if (!taskColumns.has('importance')) db.run('ALTER TABLE tasks ADD COLUMN importance TEXT');
+      if (!taskColumns.has('planned_date')) db.run('ALTER TABLE tasks ADD COLUMN planned_date TEXT');
+      if (!taskColumns.has('created_at')) db.run('ALTER TABLE tasks ADD COLUMN created_at INTEGER');
+      const noteColumns = new Set((db.exec('PRAGMA table_info(mindmap_notes)')[0]?.values ?? []).map(column => column[1]));
+      if (!noteColumns.has('width')) db.run('ALTER TABLE mindmap_notes ADD COLUMN width REAL');
+      if (!noteColumns.has('height')) db.run('ALTER TABLE mindmap_notes ADD COLUMN height REAL');
       return db;
     })();
   }
@@ -258,7 +278,7 @@ function loadStoreFromDatabase(db) {
   const [metadata] = rows(db, 'SELECT settings_json, active_task_id, resume_task_id FROM app_state WHERE id = 1');
   if (!metadata) return null;
   const entries = rows(db, 'SELECT id, task_id, start, end, session_id, manual FROM task_entries');
-  const tasks = rows(db, 'SELECT id, name, description, parent_id, kind, category, category_color, dependencies_json, done FROM tasks')
+  const tasks = rows(db, 'SELECT id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at FROM tasks')
     .map(task => ({
       id: task.id,
       name: task.name,
@@ -267,6 +287,13 @@ function loadStoreFromDatabase(db) {
       kind: task.kind ?? undefined,
       category: task.category ?? undefined,
       categoryColor: task.category_color ?? undefined,
+      projectColor: task.project_color ?? undefined,
+      mapWidth: task.map_width ?? undefined,
+      mapHeight: task.map_height ?? undefined,
+      priority: task.priority ?? undefined,
+      importance: task.importance ?? undefined,
+      plannedDate: task.planned_date ?? undefined,
+      createdAt: task.created_at ?? undefined,
       dependencies: JSON.parse(task.dependencies_json || '[]'),
       done: Boolean(task.done),
       entries: entries.filter(entry => entry.task_id === task.id).map(entry => ({
@@ -280,8 +307,9 @@ function loadStoreFromDatabase(db) {
   return {
     sessions: rows(db, 'SELECT id, start, end FROM sessions').map(session => ({ ...session, end: session.end ?? undefined })),
     tasks,
-    mindmapNotes: rows(db, 'SELECT id, root_task_id, text, color, x, y FROM mindmap_notes').map(note => ({
+    mindmapNotes: rows(db, 'SELECT id, root_task_id, text, color, x, y, width, height FROM mindmap_notes').map(note => ({
       id: note.id, rootTaskId: note.root_task_id, text: note.text, color: note.color, x: note.x, y: note.y,
+      width: note.width ?? undefined, height: note.height ?? undefined,
     })),
     calendarEvents: rows(db, 'SELECT id, title, date, time, notes, color, reminder FROM calendar_events').map(event => ({
       id: event.id, title: event.title, date: event.date, time: event.time ?? undefined,
@@ -307,14 +335,16 @@ function saveStoreToDatabase(db, store) {
   try {
     db.exec('DELETE FROM task_entries; DELETE FROM tasks; DELETE FROM sessions; DELETE FROM mindmap_notes; DELETE FROM calendar_events; DELETE FROM app_state;');
     runInsert(db, 'INSERT INTO sessions (id, start, end) VALUES (?, ?, ?)', store.sessions ?? [], session => [session.id, session.start, session.end ?? null]);
-    runInsert(db, 'INSERT INTO tasks (id, name, description, parent_id, kind, category, category_color, dependencies_json, done) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', store.tasks ?? [], task => [
+    runInsert(db, 'INSERT INTO tasks (id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', store.tasks ?? [], task => [
       task.id, task.name, task.description ?? null, task.parentId ?? null, task.kind ?? null,
       task.category ?? null, task.categoryColor ?? null, JSON.stringify(task.dependencies ?? []), task.done ? 1 : 0,
+      task.projectColor ?? null, task.mapWidth ?? null, task.mapHeight ?? null,
+      task.priority ?? null, task.importance ?? null, task.plannedDate ?? null, task.createdAt ?? null,
     ]);
     runInsert(db, 'INSERT INTO task_entries (id, task_id, start, end, session_id, manual) VALUES (?, ?, ?, ?, ?, ?)', (store.tasks ?? []).flatMap(task => (task.entries ?? []).map(entry => ({ ...entry, taskId: task.id }))), entry => [
       entry.id, entry.taskId, entry.start, entry.end ?? null, entry.sessionId ?? null, entry.manual ? 1 : 0,
     ]);
-    runInsert(db, 'INSERT INTO mindmap_notes (id, root_task_id, text, color, x, y) VALUES (?, ?, ?, ?, ?, ?)', store.mindmapNotes ?? [], note => [note.id, note.rootTaskId, note.text, note.color, note.x, note.y]);
+    runInsert(db, 'INSERT INTO mindmap_notes (id, root_task_id, text, color, x, y, width, height) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', store.mindmapNotes ?? [], note => [note.id, note.rootTaskId, note.text, note.color, note.x, note.y, note.width ?? null, note.height ?? null]);
     runInsert(db, 'INSERT INTO calendar_events (id, title, date, time, notes, color, reminder) VALUES (?, ?, ?, ?, ?, ?, ?)', store.calendarEvents ?? [], event => [
       event.id, event.title, event.date, event.time ?? null, event.notes ?? null, event.color, event.reminder ? 1 : 0,
     ]);

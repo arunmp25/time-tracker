@@ -22,3 +22,6 @@
 .mindmap-note.note-yellow{background:#fff8e3}.mindmap-note.note-blue{background:#f0f6ff;color:#53657d}.mindmap-note.note-pink{background:#fff0f2;color:#795c62}.mindmap-note.note-green{background:#eef8ef;color:#536a55}.mindmap-note.note-purple{background:#f6f0ff;color:#665879}
 @media(max-width:1100px){.mindmap-workspace{grid-template-columns:220px minmax(0,1fr)}.map-instructions{display:none}}
 @media(max-width:1000px){.today-page .timer-card{grid-template-columns:minmax(0,1fr) 300px}.today-page .clock-display{font-size:42px}}
+.interactive-node{min-width:210px;overflow:visible}.node-resize-handle{position:absolute;right:1px;bottom:1px;z-index:4;width:17px;height:17px;padding:0;border:0;border-radius:0 0 7px 0;background:linear-gradient(135deg,transparent 48%,#aab4a9 49%,#aab4a9 56%,transparent 57%);color:transparent;cursor:nwse-resize;touch-action:none}.interactive-node:hover .node-resize-handle{background:linear-gradient(135deg,transparent 42%,#758b79 43%,#758b79 51%,transparent 52%)}
+
+.sticky-node .node-resize-handle{right:2px;bottom:2px}.sticky-node:hover .node-resize-handle{background:linear-gradient(135deg,transparent 42%,#8e8260 43%,#8e8260 51%,transparent 52%)}
