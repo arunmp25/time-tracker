@@ -131,3 +131,27 @@
 .theme-classic .task-page-tabs{border-color:#d0c0a8}.theme-classic .task-page-tabs button{color:#86735e}.theme-classic .task-page-tabs button.active{color:#45372b;border-bottom-color:#8c5a2d}.theme-classic .task-list-panel{background:#fbf6ed;border-color:#d0c0a8}.theme-classic .task-list-toolbar,.theme-classic .task-list-pagination{border-color:#d0c0a8}.theme-classic .task-list-toolbar h2{color:#45372b}.theme-classic .task-list-toolbar p,.theme-classic .task-list-pagination{color:#86735e}.theme-classic .task-planning-fields select,.theme-classic .task-planning-fields input{background:#fbf6ed;color:#45372b;border-color:#cdbb9f}
 .theme-dark .task-list-panel th{background:#292a36;color:#b9bac8}.theme-dark .task-list-panel td{border-color:#3a3b4a;color:#c4c4d2}.theme-dark .task-list-panel .completed-task-name{color:#e1e1ec}
 .theme-classic .task-list-panel th{background:#efe4d3;color:#76634f}.theme-classic .task-list-panel td{border-color:#d0c0a8;color:#76634f}.theme-classic .task-list-panel .completed-task-name{color:#45372b}
+
+/* Dropdowns, task list and zoom controls — dark */
+.theme-dark .modal select,.theme-dark .modal input[type=date]{background-color:#292a36;border-color:#424354;color:#e1e1ec}
+.theme-dark .modal select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a7a9b8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+.theme-dark .modal input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1)}
+.theme-dark .task-page-tabs button span{background:#33343f;color:#b9bac8}
+.theme-dark .task-list-panel th,.theme-dark .task-list-panel td{border-bottom-color:#33343f}
+.theme-dark .task-list-panel tbody tr:hover{background:#2a2b37}
+.theme-dark .task-status{background:#30313d;color:#b9bac8}.theme-dark .status-active{background:#23382b;color:#86d39d}
+.theme-dark .task-list-dash{color:#5d5f70}
+.theme-dark .map-zoom-controls{background:#262733ee;border-color:#3e414f}
+.theme-dark .map-zoom-controls button{color:#c4c4d2}.theme-dark .map-zoom-controls button:hover:not(:disabled){background:#343543;color:#fff}
+.theme-dark .map-zoom-controls span{background:#3e414f}
+
+/* Dropdowns, task list and zoom controls — classic */
+.theme-classic .modal select,.theme-classic .modal input[type=date]{background-color:#fbf6ed;border-color:#cdbb9f;color:#45372b}
+.theme-classic .modal select:focus,.theme-classic .modal input:focus,.theme-classic .modal textarea:focus{border-color:#8c5a2d;box-shadow:0 0 0 3px #8c5a2d22}
+.theme-classic .task-page-tabs button span{background:#eadbc5;color:#754b26}
+.theme-classic .task-list-panel th,.theme-classic .task-list-panel td{border-bottom-color:#e3d6c2}
+.theme-classic .task-list-panel tbody tr:hover{background:#f4ead9}
+.theme-classic .task-status{background:#efe4d3;color:#76634f}.theme-classic .status-active{background:#e9e3c8;color:#6b5a1e}
+.theme-classic .map-zoom-controls{background:#fbf6edee;border-color:#d0c0a8}
+.theme-classic .map-zoom-controls button{color:#76634f}.theme-classic .map-zoom-controls button:hover:not(:disabled){background:#eadbc5;color:#45372b}
+.theme-classic .map-zoom-controls span{background:#d0c0a8}

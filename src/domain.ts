@@ -1,6 +1,6 @@
 export type Session = { id: string; start: number; end?: number };
 export type Entry = { id: string; start: number; end?: number; sessionId?: string; manual?: boolean };
-export type Task = { id: string; name: string; description?: string; parentId?: string; kind?: 'project' | 'task'; category?: string; categoryColor?: string; projectColor?: string; priority?: 'low'|'medium'|'high'|'urgent'; importance?: 'low'|'medium'|'high'; plannedDate?: string; createdAt?: number; mapWidth?: number; mapHeight?: number; notes?: string; notesColor?: string; dependencies?: string[]; done: boolean; entries: Entry[] };
+export type Task = { id: string; name: string; description?: string; parentId?: string; kind?: 'project' | 'task'; category?: string; categoryColor?: string; projectColor?: string; priority?: 'low'|'medium'|'high'|'urgent'; importance?: 'low'|'medium'|'high'; plannedDate?: string; createdAt?: number; completedAt?: number; mapWidth?: number; mapHeight?: number; notes?: string; notesColor?: string; dependencies?: string[]; done: boolean; entries: Entry[] };
 export type MindmapNote = { id: string; rootTaskId: string; text: string; color: string; x: number; y: number; width?: number; height?: number };
 export type CalendarEvent = { id: string; title: string; date: string; time?: string; notes?: string; color: string; reminder: boolean };
 export type CategorySetting = { name: string; color: string };
@@ -21,6 +21,7 @@ export function normalizeStore(saved: Partial<Store>): Store {
   const cleanedTasks = tasks.map(({ notes: _notes, notesColor: _notesColor, ...task }) => ({
     ...task,
     createdAt: task.createdAt ?? task.entries?.[0]?.start ?? normalizedAt,
+    completedAt: task.done ? task.completedAt ?? (Math.max(0, ...(task.entries ?? []).map(entry => entry.end ?? entry.start)) || task.createdAt || undefined) : undefined,
     priority: task.kind === 'project' ? undefined : task.priority ?? 'medium',
     importance: task.kind === 'project' ? undefined : task.importance ?? 'medium',
     entries: task.kind === 'project' ? (task.entries ?? []).map(entry => entry.end ? entry : { ...entry, end: normalizedAt }) : task.entries ?? [],

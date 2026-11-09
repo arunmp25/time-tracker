@@ -14,3 +14,41 @@
 .completed-tasks-panel{margin-top:20px;border:1px solid #e7ebe5;border-radius:8px;background:#fff;overflow:hidden}.completed-panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #edf0eb}.completed-panel-head h2{font:650 14px Manrope,sans-serif;margin:0 0 4px}.completed-panel-head p{margin:0;color:#969d95;font-size:9px}.completed-panel-head>span{min-width:23px;height:21px;padding:0 6px;display:grid;place-items:center;border-radius:10px;background:#f0f3ef;color:#71796f;font-size:9px}.completed-table-wrap{overflow:auto}.completed-tasks-panel table{width:100%;border-collapse:collapse;min-width:590px}.completed-tasks-panel th{height:32px;padding:0 15px;text-align:left;background:#fafbf9;color:#9aa198;font-size:8px;letter-spacing:.7px;font-weight:700}.completed-tasks-panel td{height:47px;padding:5px 15px;border-top:1px solid #eff1ed;color:#747b73;font-size:9px}.completed-task-name{display:flex;align-items:center;gap:8px;max-width:300px;border:0;background:transparent;padding:0;text-align:left;color:#596057;font-size:10px}.completed-task-name>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.completed-task-name:hover{color:#47764d}.completed-duration{font-variant-numeric:tabular-nums;white-space:nowrap}
 .task-page-tabs{display:flex;gap:6px;border-bottom:1px solid #e7ebe5;margin:0 0 20px}.task-page-tabs button{border:0;background:transparent;color:#73796f;padding:11px 16px;font:inherit;font-weight:650;cursor:pointer;border-bottom:2px solid transparent}.task-page-tabs button.active{color:#252824;border-bottom-color:#7664c8}.task-page-tabs button span{margin-left:6px;color:#73796f;font-size:.84em}.planner-actions{display:flex;gap:9px;align-items:center}.task-list-panel{background:#fff;border:1px solid #e7ebe5;border-radius:14px;overflow:hidden}.task-list-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:18px 20px;border-bottom:1px solid #e7ebe5}.task-list-toolbar h2{margin:0 0 4px;font-size:1.08rem}.task-list-toolbar p{margin:0;color:#73796f;font-size:.9rem}.task-list-toolbar .search{width:min(320px,40%)}.task-priority,.task-importance{display:inline-flex;padding:4px 9px;border-radius:999px;text-transform:capitalize;font-size:.82em;font-weight:700;background:#f0f1f4;color:#73796f}.priority-urgent{background:#fce3e4;color:#a52933}.priority-high{background:#ffedd5;color:#a95409}.priority-medium{background:#e7eafe;color:#4f58a3}.priority-low{background:#e8eaed;color:#626875}.importance-high{background:#fce3e4;color:#a52933}.importance-medium{background:#e7eafe;color:#4f58a3}.importance-low{background:#e8eaed;color:#626875}.task-list-empty{text-align:center;color:#73796f;padding:30px!important}.task-list-pagination{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-top:1px solid var(--line);color:#73796f;font-size:.9rem}.task-list-pagination>div{display:flex;align-items:center;gap:12px}.task-list-pagination .outline-button{display:inline-flex;align-items:center;gap:5px}.task-planning-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0}.task-planning-fields label{min-width:0}.project-time-note{margin-top:-7px}.task-duration{font-variant-numeric:tabular-nums}@media(max-width:760px){.task-list-toolbar{align-items:stretch;flex-direction:column}.task-list-toolbar .search{width:100%}.task-list-pagination{align-items:flex-start;flex-direction:column;gap:10px}.task-planning-fields{grid-template-columns:1fr}.planner-actions{flex-direction:column;align-items:stretch}}
 .task-list-panel table{width:100%;border-collapse:collapse;min-width:900px}.task-list-panel th{height:36px;padding:0 15px;text-align:left;background:#fafbf9;color:#8c948a;font-size:9px;letter-spacing:.6px;font-weight:700;white-space:nowrap}.task-list-panel td{height:50px;padding:7px 15px;border-top:1px solid #eff1ed;color:#626a61;font-size:12px;white-space:nowrap}.task-list-panel .completed-task-name{font-size:12px;color:#30352f}.task-list-panel .completed-duration{font-variant-numeric:tabular-nums}
+
+/* Form dropdowns & date fields: replace native macOS look with styled controls */
+.modal select,.modal label select,.task-planning-fields select{-webkit-appearance:none;appearance:none;display:block;width:100%;height:37px;margin-top:7px;padding:0 32px 0 11px;border:1px solid #dfe4dd;border-radius:7px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23858c83' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center;color:#3d433c;font:inherit;font-size:11px;font-weight:500;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.modal select:hover,.modal input:hover,.modal textarea:hover{border-color:#c9d1c7}
+.modal select:focus,.modal input:focus,.modal textarea:focus{outline:none;border-color:#8a7bd4;box-shadow:0 0 0 3px #8a7bd424}
+.modal input[type=date]{color:#3d433c;padding:0 10px;font-size:11px}
+.modal input[type=date]::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
+.task-planning-fields{gap:12px;margin:4px 0 0}.task-planning-fields label{margin:12px 0}
+
+/* Task list refresh */
+.task-page-tabs{gap:2px;margin-bottom:18px}.task-page-tabs button{padding:10px 14px;margin-bottom:-1px}.task-page-tabs button span{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:18px;padding:0 6px;margin-left:7px;border-radius:999px;background:#eef0ec;font-size:10px;font-weight:700}
+.task-list-panel{border-radius:10px;box-shadow:0 1px 2px #1f251e0a}
+.task-list-toolbar{padding:16px 18px}.task-list-toolbar h2{font:650 15px Manrope,sans-serif;letter-spacing:-.2px}.task-list-toolbar p{font-size:11px}
+.task-list-panel .completed-table-wrap{overflow-x:auto}
+.task-list-panel table{min-width:980px}
+.task-list-panel th{height:34px;padding:0 14px;border-bottom:1px solid #eef0ec}
+.task-list-panel td{height:46px;padding:6px 14px;font-size:11.5px;border-top:0;border-bottom:1px solid #f1f3ef}
+.task-list-panel tbody tr{transition:background .12s}.task-list-panel tbody tr:hover{background:#f8f9f7}
+.task-list-panel tbody tr:last-child td{border-bottom:0}
+.task-list-panel td:first-child{white-space:normal;min-width:220px}
+.task-list-panel .completed-task-name{display:flex;align-items:center;gap:9px;border:0;background:transparent;padding:0;text-align:left;font-weight:600;cursor:pointer}
+.task-list-panel .completed-task-name:hover span:last-child{text-decoration:underline;text-underline-offset:2px}
+.task-priority,.task-importance,.task-status{padding:3px 9px;font-size:10px;line-height:1.4;letter-spacing:.1px}
+.task-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;font-weight:600;background:#f0f2ee;color:#6b7369}
+.task-status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
+.status-active{background:#e6f3e9;color:#2f7a45}.status-done{background:#eceef1;color:#7b818b}
+.task-list-dash{color:#b5bab3}
+.task-list-pagination{border-top:1px solid #eef0ec;font-size:11px;padding:11px 18px}
+
+/* Mind map zoom */
+.map-graph-sizer{position:relative;min-width:100%;min-height:100%}
+.map-graph-sizer>.map-graph-world{min-width:0;min-height:0;transform-origin:0 0}
+.map-zoom-controls{position:absolute;top:12px;right:14px;z-index:3;display:flex;align-items:center;gap:2px;padding:3px;background:#ffffffee;border:1px solid #e3e7e1;border-radius:8px;box-shadow:0 2px 8px #1f251e12;backdrop-filter:blur(4px)}
+.map-zoom-controls button{display:flex;align-items:center;justify-content:center;min-width:28px;height:26px;padding:0 6px;border:0;border-radius:5px;background:transparent;color:#5d655c;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums}
+.map-zoom-controls button:hover:not(:disabled){background:#f0f2ee;color:#2d322c}
+.map-zoom-controls button:disabled{opacity:.35;cursor:default}
+.map-zoom-controls .map-zoom-level{min-width:46px}
+.map-zoom-controls span{width:1px;height:16px;margin:0 3px;background:#e3e7e1}

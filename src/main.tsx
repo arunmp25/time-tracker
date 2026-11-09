@@ -8,5 +8,6 @@ import './ui/planning.css';
 import './ui/activity.css';
 import './ui/settings.css';
 import './ui/settings-extra.css';
+import './ui/theme.css';
 
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);

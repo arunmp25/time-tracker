@@ -1,0 +1,184 @@
+/*
+ * Theme consistency layer — loaded last.
+ * Each theme defines one set of tokens; the rules below map leftover
+ * hard-coded colours (old green accent, sage greys, light surfaces in dark
+ * mode) onto those tokens. Secondary text uses --muted, which is chosen to
+ * meet WCAG AA (4.5:1) on that theme's surfaces.
+ */
+.shell{
+  --text:#252824;--muted:#636962;--line:#e9ece7;--surface:#fff;--surface-2:#f7f8f6;
+  --accent:#6c5bc4;--accent-soft:#efecfb;--accent-line:#d9d1f4;--accent-ink:#5040a6;
+  --badge:#eef0ec;--badge-ink:#555c54;--edge:#cfd4cc;--sticky-ink:#5f584a;
+}
+.shell.theme-dark{
+  --text:#e6e6ef;--muted:#a6a8b8;--line:#363745;--surface:#242532;--surface-2:#2b2c39;
+  --accent:#9c8ddd;--accent-soft:#302b40;--accent-line:#544a7c;--accent-ink:#cdc2f8;
+  --badge:#363745;--badge-ink:#d0d0dd;--edge:#4b4d60;--sticky-ink:#4b4535;
+}
+.shell.theme-classic{
+  --text:#45372b;--muted:#6c5744;--line:#dccbb2;--surface:#fbf6ed;--surface-2:#f3e9d8;
+  --accent:#8c5a2d;--accent-soft:#eadbc5;--accent-line:#d6bf9c;--accent-ink:#6b401b;
+  --badge:#eadbc5;--badge-ink:#6b401b;--edge:#c8b294;--sticky-ink:#5f584a;
+}
+
+/* ---------- Secondary text: raise to AA contrast in every theme ---------- */
+.shell .muted,.shell .eyebrow,.sidebar .workspace,.breadcrumbs,.nav-count,
+.calendar-grid .weekday,.calendar-legend,.calendar-legend span,.search kbd,
+.report-foot,.task-foot,.timer-status,.timer-caption,.timer-note,
+.timer-aside .aside-label,.timer-aside .aside-foot,.stat-row .stat-meta,
+.tasks-header,.tasks-header span,.tasks-header i,.task-name small,.task-duration,
+.completed-tasks-panel th,.completed-tasks-panel td,.completed-panel-head p,
+.task-list-panel th,.task-list-toolbar p,.task-list-pagination,.task-list-pagination span,.task-list-dash,
+.report-total span,.report-metric span,.report-panel-head>span,.report-selected-date span,
+.unassigned-row span,.unassigned-row b,.day-total span,.list-caption,.list-caption span,
+.today-session small,.today-session-tasks span,.today-session-tasks b,.today-session-tasks small,
+.report-session small,.report-session-entries span,.report-session-entries b,.report-task-detail small,
+.event-copy small,.event-copy p,.drawer-total small,.dependency-hint,
+.mindmap-copy small,.mindmap-sidebar-head b,.interactive-node-actions>span,.drag-grip,
+.collapse-node,.collapse-node span,.current-map-root,.map-instructions,
+.settings-section-title>span,.settings-row>div:first-child small,.color-picker-label span,
+.segmented-setting button:not(.selected),.activity-tabs button:not(.active),.activity-tabs button span,
+.mark-complete-button.reopen,.end-button,.modal label,.detail-drawer label{color:var(--muted)!important}
+.stat-row b,.drawer-total b,.report-total b,.report-metric b{color:var(--text)!important}
+.sticky-node-head span{color:var(--sticky-ink)!important}
+
+/* ---------- Accent: one accent per theme (replaces leftover green) ---------- */
+.activity-tabs,.segmented-setting{background:var(--surface)!important;border-color:var(--line)!important}
+.activity-tabs button.active,.segmented-setting button.selected{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.activity-tabs button.active span{color:var(--accent-ink)!important}
+.play-task:hover:not(:disabled),.play-task.playing{background:var(--accent-soft)!important;border-color:var(--accent-line)!important;color:var(--accent-ink)!important}
+.interactive-node.node-timer-active{border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)!important}
+.interactive-node:hover{border-color:var(--accent-line)!important}
+.mindtree-row.active{background:var(--accent-soft)!important}
+.text-button,.report-selected-date button{color:var(--accent-ink)!important}
+.avatar,.top-avatar{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.pulse,.status-dot.live{background:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)!important}
+.timeline-dot{background:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)!important;border:0!important}
+.task-status.status-active{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.task-check.checked{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}
+.filter-toggle:hover,.filter-toggle.active{background:var(--accent-soft)!important;border-color:var(--accent-line)!important;color:var(--accent-ink)!important}
+.mark-complete-button:not(.reopen):hover,.completed-task-name:hover{color:var(--accent-ink)!important;border-color:var(--accent-line)!important}
+.collapse-node:hover,.interactive-node-actions button:hover,.map-parent-trail button:hover,.map-add-child:hover,.map-detail:hover{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.note-icon{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.bar-track i{background:var(--accent)!important}
+.tree-edge{stroke:var(--edge)!important}
+.calendar-grid .selected-day{outline-color:var(--accent)!important}
+.day-cell.today-cell{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.calendar-legend .legend-today{background:var(--accent-line)!important}
+/* Bug fix: a legacy `.day-cell i` rule painted the dot container itself, so every
+   day (even future ones) showed a green dot. Only the real work/event dots show now. */
+.day-cell i.calendar-dots{background:transparent!important}
+.calendar-dots .work-dot,.calendar-legend .legend-work{background:var(--accent)!important}
+.shell .modal select:focus,.shell .modal input:focus,.shell .modal textarea:focus,
+.task-description-editor textarea:focus,.task-notes textarea:focus,.add-category-form input:focus{outline:none!important;border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)!important}
+
+/* ---------- Count badges ---------- */
+.dependency-head>span,.mindmap-sidebar-head span,.completed-panel-head>span,.task-page-tabs button span{background:var(--badge)!important;color:var(--badge-ink)!important}
+
+/* ---------- Neutral surfaces & dividers ---------- */
+.drawer-total{background:var(--surface-2)!important;border-color:var(--line)!important}
+.map-instructions,.map-zoom-controls{background:var(--surface)!important;border-color:var(--line)!important}
+.tasks-header,.profile,.day-total,.unassigned-row,.timer-main,.category-settings-list,.settings-row,
+.report-session,.report-task-detail,.today-session,.today-task-group,.focus-card .focus-row,
+.completed-tasks-panel td,.completed-tasks-panel th,.data-location-row,.delete-data-row,.entry-row,.stat-row,
+.report-session-entries,.today-session-tasks,.mindmap-sidebar-head,.completed-panel-head,
+.task-list-panel th,.task-list-panel td,.task-list-toolbar,.task-list-pagination,.task-page-tabs,.settings-section-title{border-color:var(--line)!important}
+.drawer-backdrop,.modal-backdrop{background:#1c1d2659!important}
+.theme-classic .drawer-backdrop,.theme-classic .modal-backdrop{background:#3a2e2266!important}
+
+/* ---------- Dark: remove leftover green surfaces & light patches ---------- */
+.theme-dark .brand,.theme-dark .brand>span{color:var(--text)!important}
+.theme-dark .detail-drawer,.theme-dark .modal{background:var(--surface)!important;color:var(--text)!important}
+.theme-dark .category-custom,.theme-dark .category-icon.category-custom{background:color-mix(in srgb,var(--category-color) 26%,#292a36)!important;color:var(--category-color)!important}
+.theme-dark .expand-button{background:transparent!important;border-color:transparent!important}
+.theme-dark .play-task{background:var(--surface-2)!important;border-color:#45475a!important;color:#d6d6e2!important}
+.theme-dark .stat-icon.purple,.theme-dark .stat-icon{background:#343543!important;color:#c7b8f5!important}
+.theme-dark .task-priority,.theme-dark .task-importance{background:#343543;color:#c4c4d2}
+.theme-dark .priority-urgent,.theme-dark .importance-high{background:#4a2629!important;color:#f3a7ad!important}
+.theme-dark .priority-high{background:#47321c!important;color:#f2bd85!important}
+.theme-dark .priority-medium,.theme-dark .importance-medium{background:#2f3150!important;color:#b5bcf5!important}
+.theme-dark .priority-low,.theme-dark .importance-low{background:#33343f!important;color:#b9bac8!important}
+.theme-dark .task-status{background:#33343f!important;color:#c4c4d2!important}
+.theme-dark .task-status.status-active{background:var(--accent-soft)!important;color:var(--accent-ink)!important}
+.theme-dark .add-category-form .add-color-picker,.theme-dark .color-picker-label input[type=color]{border-color:#424354!important;background:#292a36!important}
+
+/* ---------- Classic: no stray white controls or cool tints ---------- */
+.theme-classic .outline-button,.theme-classic .mark-complete-button,.theme-classic .filter-toggle:not(.active),
+.theme-classic .play-task:not(.playing),.theme-classic .report-total,.theme-classic .report-metric,
+.theme-classic .map-add-root-child{background:var(--surface)!important;border-color:#cdbb9f!important}
+.theme-classic .category-custom{background:color-mix(in srgb,var(--category-color) 17%,#fbf6ed)}
+.theme-classic .sticky-node textarea::placeholder{color:#9a8f72}
+.theme-dark .sticky-node textarea{background:transparent!important;color:var(--sticky-ink)!important}
+
+/* Task colour swatch: a solid dot on a tint so the project/task colour is clearly readable */
+.category-icon.category-custom>span:empty{width:7px;height:7px;border-radius:50%;background:var(--category-color)}
+.project-color-field small{color:var(--muted);font-weight:500}
+.color-reset{border:0;background:transparent;color:var(--accent-ink);font:inherit;font-size:10px;font-weight:600;padding:2px 4px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+/* Remaining AA fixes found on second audit pass */
+.dependency-head small,.settings-section-title p,.settings-card p,.stat-row small,
+.today-task-entries span,.report-task-entries span,.entry-row span,.session-item small,.profile small,.event-copy p,.calendar-event-card p,.today-event-card p,.today-event-card small,.calendar-event-card small{color:var(--muted)!important}
+.task-status.status-open{color:var(--badge-ink)!important}
+.task-status.status-done{color:#5f6570!important}
+.theme-dark .task-status.status-done{color:#b9bac8!important}
+
+/* Keep the dropdown chevron even where older theme rules reset `background` */
+.shell .modal select,.shell .task-planning-fields select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23858c83' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 11px center!important;padding-right:32px!important}
+.theme-dark .modal select,.theme-dark .task-planning-fields select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a7a9b8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important}
+.theme-classic .modal select,.theme-classic .task-planning-fields select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a7158' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important}
+
+/* Task list views (Today & outstanding / Completed / All) */
+.task-list-toolbar{flex-wrap:wrap}
+.task-list-views{display:flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.task-list-views button{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:var(--muted);font:inherit;font-size:11px;font-weight:600;cursor:pointer}
+.task-list-views button span{min-width:18px;height:17px;padding:0 5px;border-radius:999px;background:var(--badge);color:var(--badge-ink);font-size:9.5px;display:inline-flex;align-items:center;justify-content:center}
+.task-list-views button:hover{color:var(--text)}
+.task-list-views button.active{background:var(--surface);color:var(--accent-ink);box-shadow:0 1px 2px #0000001a}
+.task-list-views button.active span{background:var(--accent-soft);color:var(--accent-ink)}
+.task-list-toolbar .search{order:3;flex-basis:100%;max-width:none;width:100%!important}
+.task-list-name{display:flex;align-items:center;gap:10px}
+.task-list-name .task-check{flex:none;width:17px;height:17px;padding:0;border:1.5px solid var(--edge);border-radius:5px;background:var(--surface);display:grid;place-items:center;cursor:pointer;color:#fff}
+.task-list-name .task-check:hover{border-color:var(--accent)}
+.task-list-done .completed-task-name span:last-child{text-decoration:line-through;color:var(--muted)}
+.task-overdue{color:#b4232c!important;font-weight:600}
+.theme-dark .task-overdue{color:#f3a7ad!important}
+.theme-classic .task-overdue{color:#9c2a1e!important}
+.planner-pagination{margin-top:12px;border:1px solid var(--line)!important;border-radius:10px;background:var(--surface)}
+.task-list-name .category-icon{width:10px;height:10px;border-radius:50%}
+.task-list-name .category-icon.category-custom{background:var(--category-color)!important}
+
+/* Date fields (task details drawer, new task modal): themed like the other form controls */
+.shell{--field-bg:#fff;--field-line:#dfe4dd;--field-ink:#3d433c}
+.shell.theme-dark{--field-bg:#292a36;--field-line:#424354;--field-ink:#e1e1ec}
+.shell.theme-classic{--field-bg:#fbf6ed;--field-line:#cdbb9f;--field-ink:#45372b}
+.shell .task-planning-fields input[type=date],.shell .modal input[type=date],.shell .detail-drawer input[type=date]{
+  -webkit-appearance:none;appearance:none;display:block;width:100%;height:37px;margin-top:7px;padding:0 10px;
+  border:1px solid var(--field-line)!important;border-radius:7px;background:var(--field-bg)!important;color:var(--field-ink)!important;
+  font:inherit;font-size:11px;font-weight:500;color-scheme:light;transition:border-color .15s,box-shadow .15s}
+.shell.theme-dark .task-planning-fields input[type=date],.shell.theme-dark .modal input[type=date],.shell.theme-dark .detail-drawer input[type=date]{color-scheme:dark}
+.shell .task-planning-fields input[type=date]:hover,.shell .detail-drawer input[type=date]:hover{border-color:var(--accent-line)!important}
+.shell .task-planning-fields input[type=date]:focus,.shell .detail-drawer input[type=date]:focus{outline:none;border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)}
+.shell input[type=date]::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer;filter:none!important}
+.shell input[type=date]::-webkit-datetime-edit-text,.shell input[type=date]::-webkit-datetime-edit-month-field,.shell input[type=date]::-webkit-datetime-edit-day-field,.shell input[type=date]::-webkit-datetime-edit-year-field{color:var(--field-ink)}
+.detail-drawer .task-planning-fields label{color:var(--muted);font-size:10px;font-weight:600}
+
+/* Shared colour picker: swatch trigger + palette popover (replaces native colour inputs) */
+.color-picker{position:relative;display:inline-flex;vertical-align:middle}
+.color-picker-trigger{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 7px 0 4px;border:1px solid var(--field-line)!important;border-radius:7px;background:var(--field-bg)!important;color:var(--muted)!important;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.color-picker-trigger:hover{border-color:var(--accent-line)!important}
+.color-picker-trigger[aria-expanded=true],.color-picker-trigger:focus-visible{outline:none;border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)}
+.color-picker-swatch{display:block;width:22px;height:20px;border-radius:5px;box-shadow:inset 0 0 0 1px #0000001f}
+.color-picker-swatch.small{width:20px;height:20px;flex:none}
+.color-picker-popover{position:absolute;top:calc(100% + 6px);left:0;z-index:60;display:flex;flex-direction:column;gap:10px;width:200px;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);box-shadow:0 10px 30px #1218201f,0 2px 6px #1218200f;cursor:default}
+.color-picker-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.color-picker-option{display:grid;place-items:center;width:100%;aspect-ratio:1;padding:0;border:0;border-radius:6px;color:#fff;cursor:pointer;box-shadow:inset 0 0 0 1px #0000001a;transition:transform .1s}
+.color-picker-option:hover{transform:scale(1.12)}
+.color-picker-option.selected{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+.color-picker-custom{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:1px solid var(--line)}
+.shell .color-picker-custom input{flex:1;min-width:0;height:28px!important;margin:0!important;padding:0 8px!important;border:1px solid var(--field-line)!important;border-radius:6px;background:var(--field-bg)!important;color:var(--field-ink)!important;font:500 11px ui-monospace,SFMono-Regular,Menlo,monospace!important;text-transform:lowercase}
+.shell .color-picker-custom input:focus{outline:none;border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft)}
+/* The settings "add category" control previously stretched the native input into a bar */
+.add-category-form .add-color-picker{width:auto!important;flex:none!important;padding:0 10px 0 4px!important;border:0!important;background:transparent!important;gap:8px}
+.color-picker-label{gap:9px}
+/* Popovers near the right edge (settings rows) open leftwards */
+.category-setting-row .color-picker-popover,.settings-row .color-picker-popover{left:auto;right:0}
