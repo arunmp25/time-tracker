@@ -51,4 +51,4 @@
 .map-zoom-controls button:hover:not(:disabled){background:#f0f2ee;color:#2d322c}
 .map-zoom-controls button:disabled{opacity:.35;cursor:default}
 .map-zoom-controls .map-zoom-level{min-width:46px}
-.map-zoom-controls span{width:1px;height:16px;margin:0 3px;background:#e3e7e1}
+.map-zoom-controls>span{width:1px;height:16px;margin:0 3px;background:#e3e7e1}

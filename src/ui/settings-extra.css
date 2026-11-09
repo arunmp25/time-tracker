@@ -143,7 +143,7 @@
 .theme-dark .task-list-dash{color:#5d5f70}
 .theme-dark .map-zoom-controls{background:#262733ee;border-color:#3e414f}
 .theme-dark .map-zoom-controls button{color:#c4c4d2}.theme-dark .map-zoom-controls button:hover:not(:disabled){background:#343543;color:#fff}
-.theme-dark .map-zoom-controls span{background:#3e414f}
+.theme-dark .map-zoom-controls>span{background:#3e414f}
 
 /* Dropdowns, task list and zoom controls — classic */
 .theme-classic .modal select,.theme-classic .modal input[type=date]{background-color:#fbf6ed;border-color:#cdbb9f;color:#45372b}
@@ -154,4 +154,4 @@
 .theme-classic .task-status{background:#efe4d3;color:#76634f}.theme-classic .status-active{background:#e9e3c8;color:#6b5a1e}
 .theme-classic .map-zoom-controls{background:#fbf6edee;border-color:#d0c0a8}
 .theme-classic .map-zoom-controls button{color:#76634f}.theme-classic .map-zoom-controls button:hover:not(:disabled){background:#eadbc5;color:#45372b}
-.theme-classic .map-zoom-controls span{background:#d0c0a8}
+.theme-classic .map-zoom-controls>span{background:#d0c0a8}
