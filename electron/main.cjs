@@ -216,7 +216,8 @@ async function getDatabase() {
           importance TEXT,
           planned_date TEXT,
           created_at INTEGER,
-          completed_at INTEGER
+          completed_at INTEGER,
+          parent_ids_json TEXT
         );
         CREATE TABLE IF NOT EXISTS task_entries (
           id TEXT PRIMARY KEY,
@@ -255,6 +256,7 @@ async function getDatabase() {
       if (!taskColumns.has('planned_date')) db.run('ALTER TABLE tasks ADD COLUMN planned_date TEXT');
       if (!taskColumns.has('created_at')) db.run('ALTER TABLE tasks ADD COLUMN created_at INTEGER');
       if (!taskColumns.has('completed_at')) db.run('ALTER TABLE tasks ADD COLUMN completed_at INTEGER');
+      if (!taskColumns.has('parent_ids_json')) db.run('ALTER TABLE tasks ADD COLUMN parent_ids_json TEXT');
       const noteColumns = new Set((db.exec('PRAGMA table_info(mindmap_notes)')[0]?.values ?? []).map(column => column[1]));
       if (!noteColumns.has('width')) db.run('ALTER TABLE mindmap_notes ADD COLUMN width REAL');
       if (!noteColumns.has('height')) db.run('ALTER TABLE mindmap_notes ADD COLUMN height REAL');
@@ -280,12 +282,13 @@ function loadStoreFromDatabase(db) {
   const [metadata] = rows(db, 'SELECT settings_json, active_task_id, resume_task_id FROM app_state WHERE id = 1');
   if (!metadata) return null;
   const entries = rows(db, 'SELECT id, task_id, start, end, session_id, manual FROM task_entries');
-  const tasks = rows(db, 'SELECT id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at, completed_at FROM tasks')
+  const tasks = rows(db, 'SELECT id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at, completed_at, parent_ids_json FROM tasks')
     .map(task => ({
       id: task.id,
       name: task.name,
       description: task.description ?? undefined,
       parentId: task.parent_id ?? undefined,
+      parentIds: task.parent_ids_json ? JSON.parse(task.parent_ids_json) : (task.parent_id ? [task.parent_id] : []),
       kind: task.kind ?? undefined,
       category: task.category ?? undefined,
       categoryColor: task.category_color ?? undefined,
@@ -338,11 +341,11 @@ function saveStoreToDatabase(db, store) {
   try {
     db.exec('DELETE FROM task_entries; DELETE FROM tasks; DELETE FROM sessions; DELETE FROM mindmap_notes; DELETE FROM calendar_events; DELETE FROM app_state;');
     runInsert(db, 'INSERT INTO sessions (id, start, end) VALUES (?, ?, ?)', store.sessions ?? [], session => [session.id, session.start, session.end ?? null]);
-    runInsert(db, 'INSERT INTO tasks (id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', store.tasks ?? [], task => [
+    runInsert(db, 'INSERT INTO tasks (id, name, description, parent_id, kind, category, category_color, dependencies_json, done, project_color, map_width, map_height, priority, importance, planned_date, created_at, completed_at, parent_ids_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', store.tasks ?? [], task => [
       task.id, task.name, task.description ?? null, task.parentId ?? null, task.kind ?? null,
       task.category ?? null, task.categoryColor ?? null, JSON.stringify(task.dependencies ?? []), task.done ? 1 : 0,
       task.projectColor ?? null, task.mapWidth ?? null, task.mapHeight ?? null,
-      task.priority ?? null, task.importance ?? null, task.plannedDate ?? null, task.createdAt ?? null, task.completedAt ?? null,
+      task.priority ?? null, task.importance ?? null, task.plannedDate ?? null, task.createdAt ?? null, task.completedAt ?? null, JSON.stringify(task.parentIds ?? (task.parentId ? [task.parentId] : [])),
     ]);
     runInsert(db, 'INSERT INTO task_entries (id, task_id, start, end, session_id, manual) VALUES (?, ?, ?, ?, ?, ?)', (store.tasks ?? []).flatMap(task => (task.entries ?? []).map(entry => ({ ...entry, taskId: task.id }))), entry => [
       entry.id, entry.taskId, entry.start, entry.end ?? null, entry.sessionId ?? null, entry.manual ? 1 : 0,

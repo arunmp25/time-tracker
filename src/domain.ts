@@ -1,6 +1,6 @@
 export type Session = { id: string; start: number; end?: number };
 export type Entry = { id: string; start: number; end?: number; sessionId?: string; manual?: boolean };
-export type Task = { id: string; name: string; description?: string; parentId?: string; kind?: 'project' | 'task'; category?: string; categoryColor?: string; projectColor?: string; priority?: 'low'|'medium'|'high'|'urgent'; importance?: 'low'|'medium'|'high'; plannedDate?: string; createdAt?: number; completedAt?: number; mapWidth?: number; mapHeight?: number; notes?: string; notesColor?: string; dependencies?: string[]; done: boolean; entries: Entry[] };
+export type Task = { id: string; name: string; description?: string; parentId?: string; parentIds?: string[]; kind?: 'project' | 'task'; category?: string; categoryColor?: string; projectColor?: string; priority?: 'low'|'medium'|'high'|'urgent'; importance?: 'low'|'medium'|'high'; plannedDate?: string; createdAt?: number; completedAt?: number; mapWidth?: number; mapHeight?: number; notes?: string; notesColor?: string; dependencies?: string[]; done: boolean; entries: Entry[] };
 export type MindmapNote = { id: string; rootTaskId: string; text: string; color: string; x: number; y: number; width?: number; height?: number };
 export type CalendarEvent = { id: string; title: string; date: string; time?: string; notes?: string; color: string; reminder: boolean };
 export type CategorySetting = { name: string; color: string };
@@ -18,8 +18,10 @@ export function normalizeStore(saved: Partial<Store>): Store {
     return [{ id: uid(), rootTaskId: root.id, text: task.notes, color: task.notesColor ?? 'yellow', x: 700, y: 80 + existingNotes.length * 170 }];
   });
   const normalizedAt = Date.now();
+  const taskIds = new Set(tasks.map(task => task.id));
   const cleanedTasks = tasks.map(({ notes: _notes, notesColor: _notesColor, ...task }) => ({
     ...task,
+    ...(() => { const parentIds = task.kind === 'project' ? [] : [...new Set(parentIdsOf(task))].filter(id => id !== task.id && taskIds.has(id)); return { parentIds, parentId: parentIds[0] }; })(),
     createdAt: task.createdAt ?? task.entries?.[0]?.start ?? normalizedAt,
     completedAt: task.done ? task.completedAt ?? (Math.max(0, ...(task.entries ?? []).map(entry => entry.end ?? entry.start)) || task.createdAt || undefined) : undefined,
     priority: task.kind === 'project' ? undefined : task.priority ?? 'medium',
@@ -47,7 +49,16 @@ export function saveStore(s: Store) { localStorage.setItem(KEY, JSON.stringify(s
 export function clearLegacyStore() { localStorage.removeItem(KEY); }
 export const activeSession = (s: Store) => s.sessions.find(x => !x.end);
 export function elapsed(items: { start: number; end?: number }[], now = Date.now()) { return items.reduce((n, x) => n + Math.max(0, (x.end ?? now) - x.start), 0); }
-export const totalTaskMs = (t: Task, s: Store, now = Date.now()): number => (t.kind === 'project' ? 0 : elapsed(t.entries, now)) + s.tasks.filter(x => x.parentId === t.id).reduce((n, x) => n + totalTaskMs(x, s, now), 0);
+export const totalTaskMs = (t: Task, s: Store, now = Date.now()): number => { const ids = descendantIds(t.id, s.tasks); return (t.kind === 'project' ? 0 : elapsed(t.entries, now)) + s.tasks.filter(x => ids.has(x.id) && x.kind !== 'project').reduce((n, x) => n + elapsed(x.entries, now), 0); };
+/* ---- Task graph helpers: a task may have several parents and several children ---- */
+export function parentIdsOf(task: Pick<Task, 'parentId' | 'parentIds'>): string[] { return task.parentIds?.length ? task.parentIds : task.parentId ? [task.parentId] : []; }
+export function childrenOf(id: string, tasks: Task[]): Task[] { return tasks.filter(task => parentIdsOf(task).includes(id)); }
+export function ancestorIds(id: string, tasks: Task[]): Set<string> { const out = new Set<string>(); const queue = [...parentIdsOf(tasks.find(t => t.id === id) ?? {})]; while (queue.length) { const next = queue.shift()!; if (out.has(next)) continue; out.add(next); const task = tasks.find(t => t.id === next); if (task) queue.push(...parentIdsOf(task)); } return out; }
+export function descendantIds(id: string, tasks: Task[]): Set<string> { const out = new Set<string>(); const queue = [id]; while (queue.length) { const next = queue.shift()!; for (const child of childrenOf(next, tasks)) if (!out.has(child.id) && child.id !== id) { out.add(child.id); queue.push(child.id); } } return out; }
+export function projectsOf(task: Task, tasks: Task[]): Task[] { const ids = ancestorIds(task.id, tasks); return tasks.filter(t => t.kind === 'project' && ids.has(t.id)); }
+export function withParents(task: Task, parentIds: string[]): Task { const unique = [...new Set(parentIds)].filter(id => id !== task.id); return { ...task, parentIds: unique, parentId: unique[0] }; }
+/** True when making `parentId` a parent of `childId` would create a loop. */
+export function wouldCreateParentCycle(childId: string, parentId: string, tasks: Task[]): boolean { return childId === parentId || descendantIds(childId, tasks).has(parentId); }
 export function fmt(ms: number) { const sec = Math.floor(ms / 1000), h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 export function fmtTimer(ms: number) { return `${fmt(ms)}.${String(Math.floor(Math.max(0,ms)%1000/10)).padStart(2,'0')}`; }
 export const uid = () => crypto.randomUUID();

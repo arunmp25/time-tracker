@@ -182,3 +182,79 @@
 .color-picker-label{gap:9px}
 /* Popovers near the right edge (settings rows) open leftwards */
 .category-setting-row .color-picker-popover,.settings-row .color-picker-popover{left:auto;right:0}
+
+/* Relationship editors (Parents / Projects / Parent tasks / Subtasks) */
+.relation-editor{margin-top:14px}
+.relation-editor .relation-empty{display:block;margin:2px 0 10px;color:var(--muted);font-size:10.5px}
+.relation-actions{display:flex;gap:8px;align-items:center}
+.relation-actions select{flex:1;min-width:0;margin-top:0!important}
+.relation-actions select:disabled{opacity:.6;cursor:default}
+.relation-new{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;height:33px}
+.dependency-chip .category-icon{display:grid;place-items:center}
+.modal .relation-editor{margin:14px 0 4px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.modal .relation-editor h3{margin:0;font-size:11px}
+.task-list-relations small{display:block;margin-top:2px;font-size:10px;color:var(--muted)}
+
+/* Task tabs: Today / Pending / Completed / All */
+.today-summary{display:flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--muted);font-size:11px}
+.today-summary b{color:var(--text);font-variant-numeric:tabular-nums}
+.task-group-row td{height:auto!important;padding:14px 14px 6px!important;background:transparent!important;border-bottom:1px solid var(--line)!important}
+.task-group-row:hover{background:transparent!important}
+.task-group-label{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--text)}
+.task-group-label.group-overdue{color:#b4232c}
+.theme-dark .task-group-label.group-overdue{color:#f3a7ad}
+.theme-classic .task-group-label.group-overdue{color:#9c2a1e}
+.task-group-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:17px;margin-left:8px;padding:0 5px;border-radius:999px;background:var(--badge);color:var(--badge-ink);font-size:9.5px;font-weight:700}
+.done-today-toggle button{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:transparent;color:var(--muted);cursor:pointer;font:inherit}
+.done-today-toggle button:hover .task-group-label{color:var(--accent-ink)}
+.overdue-tag{flex:none;padding:2px 7px;border-radius:999px;background:#fce3e4;color:#a52933;font-size:9.5px;font-weight:700;letter-spacing:.2px}
+.theme-dark .overdue-tag{background:#4a2629;color:#f3a7ad}
+.theme-classic .overdue-tag{background:#f3d9cf;color:#8f2b1c}
+.plan-today{display:inline-block;margin-left:8px;vertical-align:baseline;padding:0;border:0;background:transparent;color:var(--accent-ink);font:inherit;font-size:10px;font-weight:600;cursor:pointer;opacity:0;transition:opacity .12s}
+.task-list-panel tr:hover .plan-today,.plan-today:focus-visible{opacity:1}
+
+/* Priority (signal bars) and importance (stars) icons */
+.shell{--prio-urgent:#d13b44;--prio-high:#d9731f;--prio-medium:#5b63c9;--prio-low:#6b7280;--bar-off:#dfe2e6;--star-on:#e3a21a;--star-off:#dfe2e6}
+.shell.theme-dark{--prio-urgent:#f0707a;--prio-high:#f2a35e;--prio-medium:#a5acf5;--prio-low:#9a9cab;--bar-off:#3d3f4f;--star-on:#f2c14e;--star-off:#3d3f4f}
+.shell.theme-classic{--prio-urgent:#b8322a;--prio-high:#c0661c;--prio-medium:#6d5ab8;--prio-low:#8f7d69;--bar-off:#e2d3bd;--star-on:#c98a12;--star-off:#e2d3bd}
+.prio-icon,.imp-icon{display:inline-flex;align-items:center;vertical-align:middle;cursor:default}
+.prio-icon .bar-off{fill:var(--bar-off)}
+.prio-urgent{color:var(--prio-urgent)}.prio-high .bar-on{fill:var(--prio-high)}.prio-medium .bar-on{fill:var(--prio-medium)}.prio-low .bar-on{fill:var(--prio-low)}
+.imp-icon{gap:1px}.imp-icon .star-on{fill:var(--star-on)}.imp-icon .star-off{fill:var(--star-off)}
+.task-list-panel td.icon-cell{width:1%;padding-right:22px}
+
+/* ---------- Mind map: maximise canvas space ---------- */
+.main:has(.mindmap-page) .topbar{display:none}
+.content:has(.mindmap-page){height:100vh!important;padding:14px 18px 16px!important}
+.mindmap-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px;flex:none;flex-wrap:wrap}
+.mindmap-toolbar-title{display:flex;align-items:baseline;gap:14px;min-width:0}
+.mindmap-toolbar-title h1{margin:0;font:700 18px Manrope,sans-serif;letter-spacing:-.4px;color:var(--text)}
+.mindmap-toolbar-title .muted{margin:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mindmap-workspace{gap:10px!important}
+.map-instructions{display:none!important}
+
+/* Auto arrange button lives in the map control bar */
+.map-zoom-controls .map-arrange{gap:6px;white-space:nowrap;flex:none;padding:0 9px 0 7px;color:var(--accent-ink)!important;font-size:10.5px;font-weight:650}
+.map-zoom-controls .map-arrange:hover{background:var(--accent-soft)!important}
+
+/* Expand / collapse toggle on the node's bottom edge */
+.node-toggle{position:absolute;left:50%;bottom:-11px;z-index:4;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;gap:2px;min-width:22px;height:22px;padding:0 6px;border:1.5px solid var(--accent-line);border-radius:999px;background:var(--surface);color:var(--accent-ink);font:700 10px/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px #1218201f;transition:background .15s,color .15s,border-color .15s,transform .15s}
+.node-toggle:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateX(-50%) scale(1.08)}
+.node-toggle:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.node-toggle.is-collapsed{background:var(--accent-soft);border-color:var(--accent)}
+.node-toggle.is-collapsed:hover{background:var(--accent);color:#fff}
+.interactive-node .mindmap-label>svg{display:none}
+/* Separators are direct children only; the Auto arrange label must not inherit separator sizing */
+.map-zoom-controls>span{flex:none;background:var(--line)!important}
+.map-zoom-controls .map-arrange span{width:auto;height:auto;margin:0;background:none}
+
+/* Resize handle: a quiet dot grip that appears on hover and takes the accent colour while in use */
+.shell .node-resize-handle{right:3px!important;bottom:3px!important;width:18px;height:18px;display:grid;place-items:center;padding:0;border:0;border-radius:5px;background:none!important;color:var(--edge);opacity:0;transition:opacity .15s,color .15s,background-color .15s;cursor:nwse-resize}
+.shell .node-resize-handle svg{display:block;fill:currentColor}
+.shell .interactive-node:hover .node-resize-handle,.shell .sticky-node:hover .node-resize-handle,.shell .node-resize-handle:focus-visible{opacity:1}
+.shell .node-resize-handle:hover,.shell .node-resize-handle:active{color:var(--accent);background-color:var(--accent-soft)!important}
+.shell .sticky-node .node-resize-handle{color:#b3a77c}
+.shell .sticky-node .node-resize-handle:hover,.shell .sticky-node .node-resize-handle:active{color:#7a6a32;background-color:#0000000f!important}
+.shell .node-resize-handle:focus-visible{outline:none;box-shadow:0 0 0 2px var(--accent)}
+.interactive-node .interactive-node-actions{padding-right:24px!important}
+.interactive-node-head{border-color:var(--line)!important}
