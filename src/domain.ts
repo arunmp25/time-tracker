@@ -64,3 +64,30 @@ export function fmtTimer(ms: number) { return `${fmt(ms)}.${String(Math.floor(Ma
 export const uid = () => crypto.randomUUID();
 export function localDay(ts: number) { const d = new Date(ts); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 export function durationOnDay(start:number,end:number,day:string) { const [y,m,d]=day.split('-').map(Number);const from=new Date(y,m-1,d).getTime();const to=new Date(y,m-1,d+1).getTime();return Math.max(0,Math.min(end,to)-Math.max(start,from)); }
+
+/** Local midnight that starts the day after `ts`. */
+export function nextMidnight(ts: number): number { const d = new Date(ts); d.setHours(24, 0, 0, 0); return d.getTime(); }
+
+/**
+ * Sessions belong to a single calendar day. If the running session started on an earlier day,
+ * close it at midnight and continue in a new session for each following day. The running task's
+ * open time entry is split the same way and moved to the new session, so tracking never stops.
+ */
+export function rolloverSessions(store: Store, now = Date.now()): Store {
+  let current = activeSession(store);
+  if (!current || localDay(current.start) === localDay(now)) return store;
+  let sessions = store.sessions, tasks = store.tasks;
+  while (current && nextMidnight(current.start) <= now) {
+    const boundary = nextMidnight(current.start);
+    const closing: Session = current;
+    const next: Session = { id: uid(), start: boundary };
+    sessions = [...sessions.map(s => s.id === closing.id ? { ...s, end: boundary } : s), next];
+    tasks = tasks.map(task => {
+      const open = task.entries.find(e => !e.end && e.sessionId === closing.id);
+      if (!open) return task;
+      return { ...task, entries: [...task.entries.map(e => e.id === open.id ? { ...e, end: boundary } : e), { id: uid(), start: boundary, sessionId: next.id }] };
+    });
+    current = next;
+  }
+  return { ...store, sessions, tasks };
+}
